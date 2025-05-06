@@ -4,19 +4,19 @@
 <div class="mt-4">
     <x-nav-link href="{{ url('admin/user-management/user-accounts') }}"
         class="active-link mr-5 text-sm font-medium text-white hover:text-yellow-300" id="user-accounts">User
-        Accounts</x-nav-link>
+        Account</x-nav-link>
 
     <x-nav-link href="{{ url('/admin/registrar-staff-accounts') }}"
         class="active-link mr-5 text-sm font-medium text-white hover:text-yellow-300"
         id="registrar-office-staff">Registrar Office Staff</x-nav-link>
 
-    <x-nav-link href="{{ url('admin/user-management/accounting-office-staff') }}"
+    <x-nav-link href="{{ url('/admin/accounting-staff') }}"
         class="active-link mr-5 text-sm font-medium text-white hover:text-yellow-300"
         id="accounting-office-staff">Accounting Office Staff</x-nav-link>
 
-    <x-nav-link href="{{ url('admin/user-management/admin-accounts') }}"
+    <x-nav-link href="{{ url('/admin/admin-account') }}"
         class="active-link mr-5 text-sm font-medium text-white hover:text-yellow-300" id="admin-accounts">Admin
-        Accounts</x-nav-link>
+        Account</x-nav-link>
 
     <x-nav-link href="{{ url('admin/user-management/archive') }}"
         class="active-link mr-5 text-sm font-medium text-white hover:text-yellow-300"
@@ -53,7 +53,7 @@
 
     // Add event listener for click on each link
     links.forEach(link => {
-        link.addEventListener('click', function () {
+        link.addEventListener('click', function() {
             removeActiveClass();
             this.classList.add('text-yellow-300');
         });

@@ -114,7 +114,6 @@
         }
     </script>
 
-    <!-- ✅ SweetAlert script (already in your layout) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         @if (session('success'))
@@ -138,7 +137,6 @@
         @endif
     </script>
 
-    <!-- ✅ Add this part next -->
     @if ($errors->any())
         <script>
             let errorMessages = '';

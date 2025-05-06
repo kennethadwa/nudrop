@@ -179,6 +179,47 @@ Route::delete('/admin/registrar-staff/{id}', [UserManagementController::class, '
 
 
 
+//accounting account
+Route::get('/admin/accounting-staff-accounts', [UserManagementController::class, 'accountingStaff'])->name('accounting_staff');
+
+Route::get('/admin/accounting-staff', [UserManagementController::class, 'accountingStaff'])->name('accounting.staff');
+
+Route::get('/admin/accounting-staff/create', [UserManagementController::class, 'createAccountingStaff'])->name('accounting.staff.create');
+
+Route::post('/admin/accounting-staff/store', [UserManagementController::class, 'storeAccountingStaff'])->name('accounting.staff.store');
+
+Route::get('/admin/accounting-staff/{id}/edit', [UserManagementController::class, 'editAccountingStaff'])->name('accounting.staff.edit');
+
+Route::put('/admin/accounting-staff/{id}', [UserManagementController::class, 'updateAccountingStaff'])->name('accounting.staff.update');
+
+Route::delete('/admin/accounting-staff/{id}', [UserManagementController::class, 'destroyAccountingStaff'])->name('accounting.staff.destroy');
+
+
+
+
+
+
+
+
+//accounting account
+Route::get('/admin/admin-account', [UserManagementController::class, 'adminAccount'])->name('admin.account');
+
+Route::get('/admin/admin-account', [UserManagementController::class, 'adminAccount'])->name('admin.account');
+
+Route::get('/admin/admin-account/create', [UserManagementController::class, 'createAdmin'])->name('admin.create');
+
+Route::post('/admin/admin-account/store', [UserManagementController::class, 'storeAdmin'])->name('admin.store');
+
+Route::get('/admin/admin-account/{id}/edit', [UserManagementController::class, 'editAdmin'])->name('admin.edit');
+
+Route::put('/admin/admin-account/{id}', [UserManagementController::class, 'updateAdmin'])->name('admin.update');
+
+Route::delete('/admin/admin-account/{id}', [UserManagementController::class, 'destroyAdmin'])->name('admin.destroy');
+
+
+
+
+
 // Profile Edit Route
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('auth:staff');
 

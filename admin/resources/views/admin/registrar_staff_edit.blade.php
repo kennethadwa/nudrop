@@ -25,8 +25,8 @@
                     <p class="text-sm text-gray-600">{{ $staff->email }}</p>
                 </div>
 
-                <form action="{{ route('registrar.staff.update', $staff->id) }}" method="POST" enctype="multipart/form-data"
-                    class="w-full">
+                <form action="{{ route('registrar.staff.update', $staff->id) }}" method="POST"
+                    enctype="multipart/form-data" class="w-full">
                     @csrf
                     @method('PUT')
 
@@ -74,12 +74,14 @@
                     </div>
 
                     <!-- Profile Picture Upload (Hidden) -->
-                    <input type="file" name="profile_picture" id="profile_picture" class="hidden" onchange="previewImage(event)">
+                    <input type="file" name="profile_picture" id="profile_picture" class="hidden"
+                        onchange="previewImage(event)">
 
                     <!-- Submit -->
                     <div class="flex justify-end">
-                        <button type="submit" class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition">Update
-                            Registrar Staff</button>
+                        <button type="submit"
+                            class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition">Update
+                            Information</button>
                     </div>
                 </form>
 
@@ -92,7 +94,7 @@
         // Function to preview the image before uploading
         function previewImage(event) {
             var reader = new FileReader();
-            reader.onload = function () {
+            reader.onload = function() {
                 var output = document.getElementById('profileImage');
                 output.src = reader.result;
             }

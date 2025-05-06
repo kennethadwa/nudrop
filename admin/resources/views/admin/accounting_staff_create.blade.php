@@ -11,29 +11,25 @@
                 <div class="flex flex-col items-center mb-8">
                     <div class="relative">
                         <!-- Profile Picture -->
-                        <img id="profileImage"
-                            src="{{ asset('storage/' . $user->profile_picture) ?? 'https://via.placeholder.com/150' }}"
-                            alt="Profile" class="h-32 w-32 rounded-full object-cover border-4 border-blue-600">
+                        <img id="profileImage" src="https://via.placeholder.com/150" alt="Profile"
+                            class="h-32 w-32 rounded-full object-cover border-4 border-blue-600">
 
                         <!-- Edit Profile Picture Button -->
                         <label for="profile_picture"
                             class="absolute bottom-0 right-0 bg-blue-500 text-white p-2 rounded-full cursor-pointer hover:bg-blue-600">
-                            <i class="fas fa-camera"></i> Edit
+                            <i class="fas fa-camera"></i> Add Profile
                         </label>
                     </div>
-                    <h2 class="mt-4 text-xl font-semibold text-gray-800">{{ $user->name }}</h2>
-                    <p class="text-sm text-gray-600">{{ $user->email }}</p>
                 </div>
 
-                <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data"
+                <form action="{{ route('accounting.staff.store') }}" method="POST" enctype="multipart/form-data"
                     class="w-full">
                     @csrf
-                    @method('PUT')
 
                     <!-- Full Name -->
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                        <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}"
+                        <input type="text" name="name" id="name" value="{{ old('name') }}"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                         @error('name')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -43,7 +39,7 @@
                     <!-- Email -->
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
+                        <input type="email" name="email" id="email" value="{{ old('email') }}"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
                         @error('email')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -58,29 +54,17 @@
                         @error('password')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
-                        <p class="text-sm text-gray-500">Leave blank if you don't want to change the password.</p>
                     </div>
 
-                    <!-- Address -->
+                    <!-- Role -->
                     <div class="mb-4">
-                        <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                        <input type="text" name="address" id="address" value="{{ old('address', $user->address) }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                        @error('address')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <!-- Contact Number -->
-                    <div class="mb-4">
-                        <label for="contact_number" class="block text-sm font-medium text-gray-700">Contact
-                            Number</label>
-                        <input type="text" name="contact_number" id="contact_number"
-                            value="{{ old('contact_number', $user->contact_number) }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                        @error('contact_number')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
+                        <label for="roles" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select name="roles" id="roles"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                            <option value="1" selected>Accounting Staff</option>
+                            <!-- Add more roles if needed -->
+                        </select>
                     </div>
 
                     <!-- Profile Picture Upload (Hidden) -->
@@ -97,13 +81,10 @@
                     <div class="flex justify-end mt-6">
                         <button type="submit"
                             class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            Update
-                            Information
+                            Create Registrar Staff
                         </button>
                     </div>
-
                 </form>
-
             </div>
         </div>
     </div>

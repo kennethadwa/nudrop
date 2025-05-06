@@ -12,7 +12,7 @@
                     <div class="relative">
                         <!-- Profile Picture -->
                         <img id="profileImage"
-                            src="{{ asset('storage/' . $user->profile_picture) ?? 'https://via.placeholder.com/150' }}"
+                            src="{{ $staff->profile_picture ? asset('storage/' . $staff->profile_picture) : 'https://via.placeholder.com/150' }}"
                             alt="Profile" class="h-32 w-32 rounded-full object-cover border-4 border-blue-600">
 
                         <!-- Edit Profile Picture Button -->
@@ -21,20 +21,20 @@
                             <i class="fas fa-camera"></i> Edit
                         </label>
                     </div>
-                    <h2 class="mt-4 text-xl font-semibold text-gray-800">{{ $user->name }}</h2>
-                    <p class="text-sm text-gray-600">{{ $user->email }}</p>
+                    <h2 class="mt-4 text-xl font-semibold text-gray-800">{{ $staff->name }}</h2>
+                    <p class="text-sm text-gray-600">{{ $staff->email }}</p>
                 </div>
 
-                <form action="{{ route('user.update', $user->id) }}" method="POST" enctype="multipart/form-data"
-                    class="w-full">
+                <form action="{{ route('accounting.staff.update', $staff->id) }}" method="POST"
+                    enctype="multipart/form-data" class="w-full">
                     @csrf
                     @method('PUT')
 
                     <!-- Full Name -->
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
-                        <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <input type="text" name="name" id="name" value="{{ old('name', $staff->name) }}"
+                            class="mt-1 w-full rounded-md border border-gray-300 shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500" />
                         @error('name')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -43,8 +43,8 @@
                     <!-- Email -->
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" name="email" id="email" value="{{ old('email', $user->email) }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        <input type="email" name="email" id="email" value="{{ old('email', $staff->email) }}"
+                            class="mt-1 w-full rounded-md border border-gray-300 shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500" />
                         @error('email')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -54,55 +54,37 @@
                     <div class="mb-4">
                         <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                         <input type="password" name="password" id="password"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                            class="mt-1 w-full rounded-md border border-gray-300 shadow-sm p-2 focus:border-blue-500 focus:ring-blue-500" />
+                        <p class="text-sm text-gray-500">Leave blank to keep the current password.</p>
                         @error('password')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
-                        <p class="text-sm text-gray-500">Leave blank if you don't want to change the password.</p>
                     </div>
 
-                    <!-- Address -->
+                    <!-- Role -->
                     <div class="mb-4">
-                        <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                        <input type="text" name="address" id="address" value="{{ old('address', $user->address) }}"
+                        <label for="roles" class="block text-sm font-medium text-gray-700">Role</label>
+                        <select name="roles" id="roles"
                             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                        @error('address')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
-
-                    <!-- Contact Number -->
-                    <div class="mb-4">
-                        <label for="contact_number" class="block text-sm font-medium text-gray-700">Contact
-                            Number</label>
-                        <input type="text" name="contact_number" id="contact_number"
-                            value="{{ old('contact_number', $user->contact_number) }}"
-                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500">
-                        @error('contact_number')
+                            <option value="1" {{ $staff->role == 1 ? 'selected' : '' }}>Accounting Staff</option>
+                        </select>
+                        @error('roles')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
 
                     <!-- Profile Picture Upload (Hidden) -->
-                    <div class="mb-4">
-                        <input type="file" name="profile_picture" id="profile_picture"
-                            class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:py-2 file:px-4 file:text-sm file:font-semibold file:text-blue-700 hover:file:bg-blue-100"
-                            style="display: none;" onchange="previewImage(event)">
-                        @error('profile_picture')
-                            <span class="text-red-500 text-sm">{{ $message }}</span>
-                        @enderror
-                    </div>
+                    <input type="file" name="profile_picture" id="profile_picture" class="hidden"
+                        onchange="previewImage(event)">
 
-                    <!-- Submit Button -->
-                    <div class="flex justify-end mt-6">
+                    <!-- Submit -->
+                    <div class="flex justify-end">
                         <button type="submit"
-                            class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            Update
-                            Information
-                        </button>
+                            class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition">Update
+                            Information</button>
                     </div>
-
                 </form>
+
 
             </div>
         </div>

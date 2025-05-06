@@ -211,4 +211,204 @@ class UserManagementController extends Controller
         return redirect()->route('registrar.staff')->with('success', 'Registrar Staff deleted successfully!');
     }
 
+
+
+
+
+
+
+
+
+     // accounting office account
+    public function accountingStaff()
+    {
+        $staff = StaffAccount::where('roles', 1)->get();
+        return view('admin.accounting_staff_account', compact('staff'));
+    }
+
+    // CREATE Accounting Staff
+    public function createAccountingStaff()
+    {
+        return view('admin.accounting_staff_create');
+    }
+
+    // STORE Accounting Staff
+    public function storeAccountingStaff(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:staff_accounts',
+            'password' => 'required|string|min:6',
+            'profile_picture' => 'nullable|image|max:2048',
+        ]);
+
+        $path = null;
+        if ($request->hasFile('profile_picture')) {
+            $path = $request->file('profile_picture')->store('staff_profiles', 'public');
+        }
+
+        StaffAccount::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'roles' => 1, // Accounting Staff
+            'profile_picture' => $path,
+        ]);
+
+        return redirect()->route('accounting.staff')->with('success', 'Accounting Staff added successfully!');
+    }
+
+    // EDIT Accounting Staff
+    public function editAccountingStaff($id)
+    {
+        $staff = StaffAccount::findOrFail($id);
+        return view('admin.accounting_staff_edit', compact('staff'));
+    }
+
+    // UPDATE Accounting Staff
+    public function updateAccountingStaff(Request $request, $id)
+    {
+        $staff = StaffAccount::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:staff_accounts,email,' . $id,
+            'password' => 'nullable|string|min:6',
+            'profile_picture' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('profile_picture')) {
+            if ($staff->profile_picture) {
+                Storage::disk('public')->delete($staff->profile_picture);
+            }
+            $path = $request->file('profile_picture')->store('staff_profiles', 'public');
+            $staff->profile_picture = $path;
+        }
+
+        if ($request->filled('password')) {
+            $staff->password = Hash::make($request->password);
+        }
+
+        $staff->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'profile_picture' => $staff->profile_picture,
+        ]);
+
+        return redirect()->route('accounting.staff')->with('success', 'Accounting Staff updated successfully!');
+    }
+
+    // DELETE Accounting Staff
+    public function destroyAccountingStaff($id)
+    {
+        $staff = StaffAccount::findOrFail($id);
+        if ($staff->profile_picture) {
+            Storage::disk('public')->delete($staff->profile_picture);
+        }
+        $staff->delete();
+
+        return redirect()->route('accounting.staff')->with('success', 'Accounting Staff deleted successfully!');
+    }
+
+
+
+
+
+
+
+
+
+
+
+     // Admin Account
+    public function adminAccount()
+    {
+        $staff = StaffAccount::where('roles', 0)->get();
+        return view('admin.admin_account', compact('staff'));
+    }
+
+    // CREATE Admin
+    public function createAdmin()
+    {
+        return view('admin.admin_create');
+    }
+
+    // STORE Admin
+    public function storeAdmin(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:staff_accounts',
+            'password' => 'required|string|min:6',
+            'profile_picture' => 'nullable|image|max:2048',
+        ]);
+
+        $path = null;
+        if ($request->hasFile('profile_picture')) {
+            $path = $request->file('profile_picture')->store('staff_profiles', 'public');
+        }
+
+        StaffAccount::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'roles' => 0, // Admin Account
+            'profile_picture' => $path,
+        ]);
+
+        return redirect()->route('admin.account')->with('success', 'Admin added successfully!');
+    }
+
+    // EDIT Admin
+    public function editAdmin($id)
+    {
+        $staff = StaffAccount::findOrFail($id);
+        return view('admin.admin_edit', compact('staff'));
+    }
+
+    // UPDATE Admin
+    public function updateAdmin(Request $request, $id)
+    {
+        $staff = StaffAccount::findOrFail($id);
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:staff_accounts,email,' . $id,
+            'password' => 'nullable|string|min:6',
+            'profile_picture' => 'nullable|image|max:2048',
+        ]);
+
+        if ($request->hasFile('profile_picture')) {
+            if ($staff->profile_picture) {
+                Storage::disk('public')->delete($staff->profile_picture);
+            }
+            $path = $request->file('profile_picture')->store('staff_profiles', 'public');
+            $staff->profile_picture = $path;
+        }
+
+        if ($request->filled('password')) {
+            $staff->password = Hash::make($request->password);
+        }
+
+        $staff->update([
+            'name' => $request->name,
+            'email' => $request->email,
+            'profile_picture' => $staff->profile_picture,
+        ]);
+
+        return redirect()->route('admin.account')->with('success', 'Admin updated successfully!');
+    }
+
+    // DELETE Admin
+    public function destroyAdmin($id)
+    {
+        $staff = StaffAccount::findOrFail($id);
+        if ($staff->profile_picture) {
+            Storage::disk('public')->delete($staff->profile_picture);
+        }
+        $staff->delete();
+
+        return redirect()->route('admin.account')->with('success', 'Admin deleted successfully!');
+    }
+
 }
