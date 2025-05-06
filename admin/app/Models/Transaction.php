@@ -3,22 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Transaction extends Model
 {
-    // Add the fillable property
+    use SoftDeletes;
+
     protected $fillable = [
-    'transaction_no',
-    'pickup_request_id',
-    'payment_id',
-    'amount',
-    'verified_by',
-    'verified_at',
-];
+        'transaction_no',
+        'pickup_request_id',
+        'payment_id',
+        'amount',
+        'verified_by',
+        'verified_at',
+    ];
 
     public function pickupRequest()
     {
-        return $this->belongsTo(PickupRequest::class);
+        return $this->belongsTo(PickupRequest::class)->withTrashed();
     }
 
     public function transactionItems()
@@ -33,12 +35,11 @@ class Transaction extends Model
 
     public function payment()
     {
-        return $this->belongsTo(PaymentsModel::class);
+        return $this->belongsTo(PaymentsModel::class)->withTrashed();
     }
 
     public function verifier()
-{
-    return $this->belongsTo(StaffAccount::class, 'verified_by');
-}
-
+    {
+        return $this->belongsTo(StaffAccount::class, 'verified_by');
+    }
 }

@@ -377,12 +377,28 @@ public function verify(Request $request, $id)
 
     // Restore a soft-deleted request
     public function accounting_restore($id)
-    {
-        $request = PickupRequest::onlyTrashed()->findOrFail($id);
-        $request->restore();
+{
+    $pickupRequest = PickUpRequest::onlyTrashed()->findOrFail($id);
+    $pickupRequest->restore();
 
-        return redirect()->route('accounting.archive')->with('success', 'Request restored successfully.');
+    // Restore related payment
+    $payment = PaymentsModel::onlyTrashed()->where('pickup_request_id', $pickupRequest->id)->first();
+    if ($payment) {
+        $payment->restore();
+
+        // Restore related transaction
+        $transaction = Transaction::onlyTrashed()->where('payment_id', $payment->id)->first();
+        if ($transaction) {
+            $transaction->restore();
+
+            // Restore related transaction items
+            TransactionItem::onlyTrashed()->where('transaction_id', $transaction->id)->restore();
+        }
     }
+
+    return redirect()->route('accounting.archive')->with('success', 'Request and related records restored successfully.');
+}
+
 
     // Permanently delete a request
     public function accounting_forceDelete($id)
