@@ -137,18 +137,17 @@ class UserManagementController extends Controller
         $data = $sheet->toArray();
 
         // Process each row and insert into the users table
-        foreach ($data as $row) {
-            // Ensure the row has the expected columns (adjust indexes based on your Excel format)
-            if (!empty($row[0]) && !empty($row[1])) { // Adjust based on column positions
-                User::create([
-                    'name' => $row[0],  // Assuming the name is in the first column
-                    'email' => $row[1], // Assuming email is in the second column
-                    'address' => $row[2], // Adjust as per the data
-                    'contact_number' => $row[3], // Adjust as per the data
-                    'password' => Hash::make('defaultPassword'), // Add a default password or customize
-                ]);
-            }
-        }
+        foreach (array_slice($data, 1) as $row) {
+    if (!empty($row[0]) && !empty($row[1])) {
+        User::create([
+            'name' => $row[0],
+            'email' => $row[1],
+            'address' => $row[2] ?? null,
+            'contact_number' => $row[3] ?? null,
+            'password' => Hash::make('defaultPassword'),
+        ]);
+    }
+}
 
         return redirect()->route('user_management')->with('success', 'Users imported successfully!');
     }

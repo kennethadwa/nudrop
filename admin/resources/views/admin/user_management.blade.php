@@ -12,22 +12,17 @@
                     <h1 class="text-xl font-semibold text-gray-800">User Management</h1>
 
                     <div class="flex gap-4">
-                        <!-- Upload Excel Button -->
-                        <button id="uploadButton"
-                            class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                            Upload Excel File
+                        <form action="{{ route('user.uploadExcel') }}" method="POST" enctype="multipart/form-data"
+                            id="importForm" style="display: none;">
+                            @csrf
+                            <input type="file" name="excel_file" id="excelFileInput" accept=".xlsx, .xls" />
+                        </form>
+
+                        <button type="button" id="uploadButton"
+                            class="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                            Upload Excel
                         </button>
 
-                        <form action="{{ route('user.uploadExcel') }}" method="POST" enctype="multipart/form-data"
-                            id="importForm" class="hidden mt-4">
-                            @csrf
-                            <input type="file" name="excel_file" id="excelFileInput" accept=".xlsx, .xls"
-                                onchange="showImportButton()" />
-                            <button type="submit"
-                                class="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                                Import
-                            </button>
-                        </form>
 
                         <a href="{{ route('user.create') }}"
                             class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
@@ -70,7 +65,7 @@
                                         <a href="{{ route('user.edit', $user->id) }}"
                                             class="flex items-center gap-2 rounded bg-blue-500 px-3 py-1.5 text-white shadow-sm shadow-black transition hover:bg-blue-600">Edit</a>
                                         <form action="{{ route('user.destroy', $user->id) }}" method="POST"
-                                            class="delete-user-form">
+                                            class="delete-user-form" data-username="{{ $user->name }}">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
@@ -107,14 +102,41 @@
     </script>
 @endif
 
+
 <script>
-    // Trigger file input when the "Upload Excel File" button is clicked
+    document.querySelectorAll('.delete-user-form').forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent the form from submitting
+
+            const username = form.getAttribute('data-username');
+
+            Swal.fire({
+                title: `Delete ${username}?`,
+                text: "This action cannot be undone.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!',
+                background: '#fff',
+                color: '#000'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit the form if confirmed
+                }
+            });
+        });
+    });
+</script>
+
+<script>
     document.getElementById("uploadButton").addEventListener("click", function() {
         document.getElementById("excelFileInput").click();
     });
 
-    // Show the Import button once a file is selected
-    function showImportButton() {
-        document.getElementById("importForm").classList.remove("hidden");
-    }
+    document.getElementById("excelFileInput").addEventListener("change", function() {
+        if (this.files.length > 0) {
+            document.getElementById("importForm").submit();
+        }
+    });
 </script>
