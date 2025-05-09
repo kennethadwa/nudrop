@@ -19,13 +19,13 @@
                         </form>
 
                         <button type="button" id="uploadButton"
-                            class="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                            Upload Excel
+                            class="inline-flex items-center rounded-md bg-green-500 px-4 py-2 text-sm font-medium text-white hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                            Import Excel
                         </button>
 
 
                         <a href="{{ route('user.exportExcel') }}"
-                            class="inline-flex items-center rounded-md bg-yellow-600 px-4 py-2 text-sm font-medium text-white hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+                            class="inline-flex items-center rounded-md bg-yellow-500 px-4 py-2 text-sm font-medium text-white hover:bg-yellow-600 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
                             Export Excel
                         </a>
 
@@ -44,26 +44,32 @@
                         <thead class="bg-gray-100 uppercase text-gray-600 mb-6">
                             <tr>
                                 <th class="px-4 py-2">User ID</th>
-                                <th class="px-4 py-2">Profile Picture</th>
                                 <th class="px-4 py-2">Name</th>
                                 <th class="px-4 py-2">Email</th>
                                 <th class="px-4 py-2">Address</th>
                                 <th class="px-4 py-2">Contact Number</th>
                                 <th class="px-4 py-2">Actions</th>
                             </tr>
+                            <tr class="text-sm lowercase">
+                                <th class="px-4 py-2"><input type="text"
+                                        class="column-search w-full p-1 border rounded" placeholder="Search ID"></th>
+                                <th class="px-4 py-2"><input type="text"
+                                        class="column-search w-full p-1 border rounded" placeholder="Search Name"></th>
+                                <th class="px-4 py-2"><input type="text"
+                                        class="column-search w-full p-1 border rounded" placeholder="Search Email"></th>
+                                <th class="px-4 py-2"><input type="text"
+                                        class="column-search w-full p-1 border rounded" placeholder="Search Address">
+                                </th>
+                                <th class="px-4 py-2"><input type="text"
+                                        class="column-search w-full p-1 border rounded" placeholder="Search Contact">
+                                </th>
+                                <th class="px-4 py-2"></th>
+                            </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200">
                             @forelse ($users as $user)
                                 <tr>
                                     <td class="px-4 py-2">{{ $user->id }}</td>
-                                    <td class="px-4 py-2">
-                                        @if ($user->profile_picture)
-                                            <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile"
-                                                class="h-10 w-10 rounded-full object-cover">
-                                        @else
-                                            N/A
-                                        @endif
-                                    </td>
                                     <td class="px-4 py-2">{{ $user->name }}</td>
                                     <td class="px-4 py-2">{{ $user->email }}</td>
                                     <td class="px-4 py-2">{{ $user->address }}</td>
@@ -145,5 +151,36 @@
         if (this.files.length > 0) {
             document.getElementById("importForm").submit();
         }
+    });
+</script>
+
+
+<script>
+    document.querySelectorAll(".column-search").forEach((input, index) => {
+        input.addEventListener("input", () => {
+            const filterValues = Array.from(document.querySelectorAll(".column-search")).map(i => i
+                .value.toLowerCase());
+            console.log("Filter Values: ", filterValues);
+
+            document.querySelectorAll("tbody tr").forEach(row => {
+                const cells = row.querySelectorAll("td");
+                let visible = true;
+
+                filterValues.forEach((val, i) => {
+                    const cellText = cells[i] ? cells[i].textContent.toLowerCase()
+                        .trim() : "";
+                    console.log(
+                        `Checking cell ${i}: ${cellText} against filter value: ${val}`
+                    );
+
+
+                    if (val && !cellText.includes(val)) {
+                        visible = false;
+                    }
+                });
+
+                row.style.display = visible ? "" : "none";
+            });
+        });
     });
 </script>

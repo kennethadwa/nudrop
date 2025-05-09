@@ -35,7 +35,26 @@
                                 <th class="border px-4 py-2">Verification Status</th>
                                 <th class="border px-4 py-2 text-center">Actions</th>
                             </tr>
+                            <tr>
+                                <!-- One search box per column (skip 'Actions') -->
+                                <th class="border px-2 py-1"><input type="text" onkeyup="columnSearch(0)"
+                                        placeholder="Search Ref#" class="w-full border p-1 text-xs" /></th>
+                                <th class="border px-2 py-1"><input type="text" onkeyup="columnSearch(1)"
+                                        placeholder="Search User" class="w-full border p-1 text-xs" /></th>
+                                <th class="border px-2 py-1"><input type="text" onkeyup="columnSearch(2)"
+                                        placeholder="Search Doc" class="w-full border p-1 text-xs" /></th>
+                                <th class="border px-2 py-1"><input type="text" onkeyup="columnSearch(3)"
+                                        placeholder="Search Amount" class="w-full border p-1 text-xs" /></th>
+                                <th class="border px-2 py-1"><input type="text" onkeyup="columnSearch(4)"
+                                        placeholder="Search Method" class="w-full border p-1 text-xs" /></th>
+                                <th class="border px-2 py-1"><input type="text" onkeyup="columnSearch(5)"
+                                        placeholder="Search Date" class="w-full border p-1 text-xs" /></th>
+                                <th class="border px-2 py-1"><input type="text" onkeyup="columnSearch(6)"
+                                        placeholder="Search Status" class="w-full border p-1 text-xs" /></th>
+                                <th class="border px-2 py-1"></th>
+                            </tr>
                         </thead>
+
 
                         <tbody>
                             @forelse($requests as $request)
@@ -256,5 +275,28 @@
             confirmButtonColor: '#3085d6',
             confirmButtonText: 'OK',
         });
+    }
+</script>
+
+
+<script>
+    function columnSearch(colIndex) {
+        var input, filter, table, tr, td, i, txtValue;
+        table = document.getElementById("pickupTable");
+        tr = table.getElementsByTagName("tr");
+        input = tr[1].getElementsByTagName("input")[colIndex]; // 2nd row inputs
+        filter = input.value.toUpperCase();
+
+        for (i = 2; i < tr.length; i++) { // start from third row (index 2)
+            td = tr[i].getElementsByTagName("td")[colIndex];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
     }
 </script>
