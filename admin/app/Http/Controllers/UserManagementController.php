@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 
 class UserManagementController extends Controller
@@ -151,6 +154,50 @@ class UserManagementController extends Controller
 
         return redirect()->route('user_management')->with('success', 'Users imported successfully!');
     }
+
+
+
+
+    public function exportExcel()
+{
+    $users = User::all();
+
+    $spreadsheet = new Spreadsheet();
+    $sheet = $spreadsheet->getActiveSheet();
+    $sheet->setTitle('Users');
+
+    // Set headers
+    $sheet->setCellValue('A1', 'ID');
+    $sheet->setCellValue('B1', 'Name');
+    $sheet->setCellValue('C1', 'Email');
+    $sheet->setCellValue('D1', 'Address');
+    $sheet->setCellValue('E1', 'Contact Number');
+
+    // Fill rows
+    $row = 2;
+    foreach ($users as $user) {
+        $sheet->setCellValue('A' . $row, $user->id);
+        $sheet->setCellValue('B' . $row, $user->name);
+        $sheet->setCellValue('C' . $row, $user->email);
+        $sheet->setCellValue('D' . $row, $user->address);
+        $sheet->setCellValue('E' . $row, $user->contact_number);
+        $row++;
+    }
+
+    // Stream response
+    $writer = new Xlsx($spreadsheet);
+
+    $filename = 'users_export.xlsx';
+    $response = new StreamedResponse(function () use ($writer) {
+        $writer->save('php://output');
+    });
+
+    $response->headers->set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    $response->headers->set('Content-Disposition', 'attachment;filename="' . $filename . '"');
+    $response->headers->set('Cache-Control', 'max-age=0');
+
+    return $response;
+}
 
 
 

@@ -164,6 +164,10 @@ Route::delete('/user/{id}', [UserManagementController::class, 'destroy'])->name(
 //import users
 Route::post('/user/upload-excel', [UserManagementController::class, 'uploadExcel'])->name('user.uploadExcel');
 
+//export users
+Route::get('/users/export', [UserManagementController::class, 'exportExcel'])->name('user.exportExcel');
+
+
 
 //registrar account
 Route::get('/admin/registrar-staff-accounts', [UserManagementController::class, 'registrarStaff'])->name('registrar_staff');
