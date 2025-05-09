@@ -10,10 +10,31 @@
 
                 <div class="mb-6 flex justify-between">
                     <h1 class="text-xl font-semibold text-gray-800">User Management</h1>
-                    <a href="{{ route('user.create') }}"
-                        class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-                        New User
-                    </a>
+
+                    <div class="flex gap-4">
+                        <!-- Upload Excel Button -->
+                        <button id="uploadButton"
+                            class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            Upload Excel File
+                        </button>
+
+                        <form action="{{ route('user.uploadExcel') }}" method="POST" enctype="multipart/form-data"
+                            id="importForm" class="hidden mt-4">
+                            @csrf
+                            <input type="file" name="excel_file" id="excelFileInput" accept=".xlsx, .xls"
+                                onchange="showImportButton()" />
+                            <button type="submit"
+                                class="inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+                                Import
+                            </button>
+                        </form>
+
+                        <a href="{{ route('user.create') }}"
+                            class="inline-flex items-center rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                            New User
+                        </a>
+                    </div>
+
                 </div>
 
                 <div class="overflow-x-auto">
@@ -85,26 +106,15 @@
         });
     </script>
 @endif
-<script>
-    document.querySelectorAll('.delete-user-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
 
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "This action cannot be undone.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#e3342f',
-                cancelButtonColor: '#6c757d',
-                confirmButtonText: 'Yes, delete it!',
-                background: '#35408F',
-                color: '#fff'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
-            });
-        });
+<script>
+    // Trigger file input when the "Upload Excel File" button is clicked
+    document.getElementById("uploadButton").addEventListener("click", function() {
+        document.getElementById("excelFileInput").click();
     });
+
+    // Show the Import button once a file is selected
+    function showImportButton() {
+        document.getElementById("importForm").classList.remove("hidden");
+    }
 </script>

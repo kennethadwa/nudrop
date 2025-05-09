@@ -7,6 +7,8 @@ use App\Models\User;
 use App\Models\StaffAccount;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 
 class UserManagementController extends Controller
@@ -112,6 +114,44 @@ class UserManagementController extends Controller
         return redirect()->route('user.management')->with('success', 'User deleted successfully!');
     }
 
+
+
+
+
+
+    // Import Users from Excel
+    public function uploadExcel(Request $request)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'excel_file' => 'required|mimes:xlsx,xls,csv|max:10240',
+        ]);
+
+        // Handle the file upload
+        $file = $request->file('excel_file');
+        $path = $file->storeAs('uploads', 'users.xlsx', 'public');
+
+        // Load the Excel file
+        $spreadsheet = IOFactory::load(storage_path('app/public/uploads/users.xlsx'));
+        $sheet = $spreadsheet->getActiveSheet();
+        $data = $sheet->toArray();
+
+        // Process each row and insert into the users table
+        foreach ($data as $row) {
+            // Ensure the row has the expected columns (adjust indexes based on your Excel format)
+            if (!empty($row[0]) && !empty($row[1])) { // Adjust based on column positions
+                User::create([
+                    'name' => $row[0],  // Assuming the name is in the first column
+                    'email' => $row[1], // Assuming email is in the second column
+                    'address' => $row[2], // Adjust as per the data
+                    'contact_number' => $row[3], // Adjust as per the data
+                    'password' => Hash::make('defaultPassword'), // Add a default password or customize
+                ]);
+            }
+        }
+
+        return redirect()->route('user_management')->with('success', 'Users imported successfully!');
+    }
 
 
 

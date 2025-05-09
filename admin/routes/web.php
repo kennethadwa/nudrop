@@ -161,6 +161,10 @@ Route::put('/user/{user}', [UserManagementController::class, 'update'])->name('u
 Route::delete('/user/{id}', [UserManagementController::class, 'destroy'])->name('user.destroy');
 
 
+//import users
+Route::post('/user/upload-excel', [UserManagementController::class, 'uploadExcel'])->name('user.uploadExcel');
+
+
 //registrar account
 Route::get('/admin/registrar-staff-accounts', [UserManagementController::class, 'registrarStaff'])->name('registrar_staff');
 

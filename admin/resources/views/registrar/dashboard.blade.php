@@ -118,40 +118,6 @@
                     </div>
                 </div>
 
-                {{-- Recent Transactions --}}
-                <div class="mt-10">
-                    <h2 class="mb-4 text-2xl font-bold text-gray-800">🧾 Recent Transactions</h2>
-                    <div class="overflow-x-auto rounded-xl bg-white shadow-md">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                        Transaction ID</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                        Date</th>
-                                    <th
-                                        class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                                        Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200 bg-white">
-                                <tr>
-                                    <td class="whitespace-nowrap px-6 py-4">123456</td>
-                                    <td class="whitespace-nowrap px-6 py-4">2023-10-01</td>
-                                    <td class="whitespace-nowrap px-6 py-4">₱100.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="whitespace-nowrap px-6 py-4">123457</td>
-                                    <td class="whitespace-nowrap px-6 py-4">2023-10-02</td>
-                                    <td class="whitespace-nowrap px-6 py-4">₱150.00</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>

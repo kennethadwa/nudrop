@@ -81,7 +81,7 @@
                     <div class="flex justify-end mt-6">
                         <button type="submit"
                             class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            Create Registrar Staff
+                            Save Information
                         </button>
                     </div>
                 </form>

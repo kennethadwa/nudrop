@@ -358,7 +358,7 @@ public function verify(Request $request, $id)
     // Soft delete the pickup request
     $pickupRequest->delete();
 
-    return redirect()->route('accounting.pickup_requests.index')->with('success', 'Pickup request and related records soft deleted.');
+    return redirect()->route('accounting.pickup_requests.index')->with('success', 'Pickup Request Added Successfully in Archive.');
 }
 
 

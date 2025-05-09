@@ -14,10 +14,6 @@
         class="active-link mr-5 text-sm font-medium text-white hover:text-yellow-300"
         id="accounting-office-staff">Accounting Office Staff</x-nav-link>
 
-    <x-nav-link href="{{ url('/admin/admin-account') }}"
-        class="active-link mr-5 text-sm font-medium text-white hover:text-yellow-300" id="admin-accounts">Admin
-        Account</x-nav-link>
-
     <x-nav-link href="{{ url('admin/user-management/archive') }}"
         class="active-link mr-5 text-sm font-medium text-white hover:text-yellow-300"
         id="archived-accounts">Archive</x-nav-link>

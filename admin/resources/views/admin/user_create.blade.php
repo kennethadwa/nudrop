@@ -53,7 +53,6 @@
                         @error('password')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
-                        <p class="text-sm text-gray-500">Leave blank if you don't want to change the password.</p>
                     </div>
 
                     <!-- Address -->
@@ -92,7 +91,7 @@
                     <div class="flex justify-end mt-6">
                         <button type="submit"
                             class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            Save User
+                            Save Information
                         </button>
                     </div>
 
